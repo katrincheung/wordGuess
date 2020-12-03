@@ -1,7 +1,8 @@
 import './App.css';
-import Main from "./Main";
-import {Link} from "react-router-dom";
-import React from "react";
+import Main from './Main';
+import MyLinkLink from './components/MyLink';
+import React from 'react';
+import MyLink from "./components/MyLink";
 
 
 
@@ -10,12 +11,8 @@ function App() {
       <div className="App">
         <Main />
         <div className="center">
-          <Link to="/">
-            <button variant="outlined">Main</button>
-          </Link>
-          <Link to="/Login">
-            <button variant="outlined">Login</button>
-          </Link>
+            <MyLink link={"/"}>Main</MyLink>
+            <MyLink link={"/Login"}>Login Page</MyLink>
         </div>
       </div>
   );
