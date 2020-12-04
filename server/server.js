@@ -5,7 +5,14 @@ const server = new WebSocket.Server({ port: 8080 })
 server.on('connection', (ws) => {
     ws.on('message', (message) => {
         console.log(`Received message => ${message}`)
+        server.clients.forEach(function each(client) {
+            if (client.readyState == WebSocket.OPEN) {
+                client.send("server message");
+            }
+        })
     })
     ws.send('ho!')
+
 })
+
 

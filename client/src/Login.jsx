@@ -1,12 +1,17 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import MyInput from './components/common/MyInput'
+import { socket } from './App'
 
 function Login() {
 
     const [ name, setName ] = useState("");
     const [ code, setCode ] = useState("");
 
-    const handleSubmit = () => alert("submit");
+    const handleSubmit = () => {
+        socket.send(name);
+        socket.send(code);
+        console.log("messaged sent");
+    }
 
 
     return (
