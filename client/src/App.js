@@ -1,10 +1,16 @@
 import './App.css';
 import Main from './Main';
-import MyLinkLink from './components/MyLink';
 import React from 'react';
 import MyLink from "./components/MyLink";
 
 
+const socket = new WebSocket('ws://localhost:8080')
+socket.onopen = () => {
+    console.log("connected!");
+}
+socket.addEventListener('message', function (event) {
+    console.log('Message from server ', event.data);
+});
 
 function App() {
   return (
