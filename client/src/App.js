@@ -28,6 +28,7 @@ function App() {
         <div className="center">
             <MyLink link={"/"}>Main</MyLink>
             <MyLink link={"/Login"}>Login Page</MyLink>
+            <MyLink link={"/Game"}>Game Page</MyLink>
             <button onClick={handle}>debug</button>
         </div>
       </div>
