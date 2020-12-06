@@ -8,9 +8,11 @@ function Login() {
     const [ code, setCode ] = useState("");
 
     const handleSubmit = () => {
+        socket.send('name');
         socket.send(name);
         socket.send(code);
-        console.log("messaged sent");
+        socket.send('Message is finished!!!');
+        console.log("message sent");
     }
 
 
