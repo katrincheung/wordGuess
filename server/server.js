@@ -7,8 +7,8 @@ server.on('connection', (ws) => {
 
     ws.on('message', (message) => {
         let messageQueue = message.split(' ');
-        handleMessage(messageQueue);
-        ws.send('whole message received');
+        handleMessage(ws, messageQueue);
+        ws.send('Message received');
     })
 
     ws.send('Server connected')
