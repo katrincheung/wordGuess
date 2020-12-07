@@ -1,5 +1,5 @@
-import handleLoginRequest from "./LoginFunction.js";
-import handleGameStartRequest from "./LoginFunction.js";
+import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
+// import handleGameStartRequest from "./LoginFunction.js";
 
 export default function handleMessage(ws, messageQueue) {
     if (messageQueue.length != 0){
@@ -20,6 +20,7 @@ export default function handleMessage(ws, messageQueue) {
                 break;
             default:
                 console.log(`unknownInput = ${messageQueue}`);
+                break;
         }
     }
 }

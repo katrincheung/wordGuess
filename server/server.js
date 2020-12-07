@@ -7,11 +7,13 @@ server.on('connection', (ws) => {
 
     ws.on('message', (message) => {
         let messageQueue = message.split(' ');
+        console.log(messageQueue);
         handleMessage(ws, messageQueue);
-        ws.send('Message received');
+        // ws.send('Message received');
     })
 
     ws.send('Server connected')
+    ws.send('Server connected 2222')
 
 })
 
