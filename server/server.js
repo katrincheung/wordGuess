@@ -13,7 +13,6 @@ server.on('connection', (ws) => {
     })
 
     ws.send('Server connected')
-    ws.send('Server connected 2222')
 
 })
 
