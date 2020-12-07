@@ -7,9 +7,7 @@ function Game() {
     const [ word, setWord ] = useState("");
 
     const handleSubmit = () => {
-        socket.send("WORD_INPUT");
-        socket.send(word);
-        socket.send('Message is finished!!!');
+        socket.send(`WORD_INPUT ${word}`);
     }
 
     return(
