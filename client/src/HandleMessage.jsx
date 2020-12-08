@@ -7,14 +7,15 @@ const HandleMessage = ({ messageQueue }) => {
 
     const [ direct, setDirect ] = useState('Login');
     const [ isHost, setIsHost ] = useState(false);
-    const [ nameList, setNameList ] = useState([])
+    const [ nameList, setNameList ] = useState([]);
+    const [ roomCode, setRoomCode ] = useState('');
 
     const Page = ({ to }) => {
         switch(to) {
             case 'Login':
                 return <Login/>
             case 'WaitingPage':
-                return <WaitingPage isHost={isHost} nameList={nameList}/>
+                return <WaitingPage isHost={isHost} nameList={nameList} code={roomCode}/>
             case 'Game':
                 return <Game/>
             default:
@@ -28,6 +29,7 @@ const HandleMessage = ({ messageQueue }) => {
         switch(command){
             case 'HOST_PLAYER':
                 setIsHost(true);
+                setRoomCode(messageQueue[1]);
                 console.log('set isHost=true');
                 break;
             case 'GUEST_PLAYER':
@@ -49,7 +51,7 @@ const HandleMessage = ({ messageQueue }) => {
             default:
                 console.log(`${messageQueue}`);
                 break;}
-        },[messageQueue, setIsHost, setNameList, setDirect],);
+        },[messageQueue, setIsHost, setNameList, setDirect, setRoomCode],);
 
     return (
         <div>

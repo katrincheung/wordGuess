@@ -1,40 +1,45 @@
-let players = [];
-let wsList = [];
 
+const wsDict = {};
+const rooms = {};
 export default function handleLoginRequest(ws, name, code) {
     console.log('handleLoginRequest');
-    if (players.length == 0){
-        ws.send('HOST_PLAYER');
-        console.log('send host')
-    }else{
+    if(code in rooms){
         ws.send('GUEST_PLAYER');
+        rooms[code].push(name);
+        wsDict[code].push(ws);
+        wsDict[code].forEach( ws => ws.send(['PLAYER_LIST',rooms[code].join(' ')].join(' ')) );
+    }else {
+        ws.send(`HOST_PLAYER ${code}`);
+        rooms[code] = [name];
+        wsDict[code] = [ws];
+        ws.send(`PLAYER_LIST ${name}`);
     }
-    players.push(name);
-    wsList.push(ws);
-    console.log(`player list = ${players}`);
-    wsList.forEach( ws => ws.send(['PLAYER_LIST',players.join(' ')].join(' ')) );
 }
 
-export function handleDisconnect() {
-    console.log('one ws disconnected');
+export function handleDisconnection() {
     let index = -1;
-    wsList.forEach( (ws, i) => {
-        if(ws.readyState == 3){
-            index = i;
-        }
-    })
+    let code = '';
+    for (let wsList in wsDict) {
+        wsDict[wsList].forEach( (ws, i) => {
+            if(ws.readyState == 3){
+                index = i;
+                code = wsList;
+            }
+        })
+    }
     if(index != -1){
-        console.log('index found');
-        wsList.splice(index, 1);
-        players.splice(index, 1);
+        rooms[code].splice(index, 1);
+        wsDict[code].splice(index, 1);
         if(index == 0){
-            wsList.forEach( ws => ws.send('HOST_DISCONNECTED'));
+            wsDict[code].forEach( ws => ws.send('HOST_DISCONNECTED'));
+            delete wsDict[code];
+            delete rooms[code];
         }else{
-            wsList.forEach( ws => ws.send(['PLAYER_LIST',players.join(' ')].join(' ')) );
+            wsDict[code].forEach( ws => ws.send(['PLAYER_LIST',rooms[code].join(' ')].join(' ')) );
         }
     }
 }
 
-export function handleGameStartRequest() {
-    wsList.forEach( playerSocket => playerSocket.send('GAME_START') );
+export function handleGameStartRequest(ws, code) {
+    wsDict[code].forEach( ws => ws.send('GAME_START') );
 }

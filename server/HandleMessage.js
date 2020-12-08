@@ -12,7 +12,7 @@ export default function handleMessage(ws, messageQueue) {
                 handleLoginRequest(ws, name, code);
                 break;
             case 'GAME_START':
-                handleGameStartRequest();
+                handleGameStartRequest(ws, messageQueue[1]);
                 break;
             case 'WORD_INPUT':
                 let word = messageQueue[1];

@@ -9,7 +9,6 @@ function Login() {
 
     const handleSubmit = () => {
         socket.send(`NAME_INPUT ${name} ${code}`);
-        console.log("message sent");
     }
 
 
