@@ -9,6 +9,9 @@ const HandleMessage = ({ messageQueue }) => {
     const [ isHost, setIsHost ] = useState(false);
     const [ nameList, setNameList ] = useState([]);
     const [ roomCode, setRoomCode ] = useState('');
+    const [ word, setWord ] = useState('');
+    const [ hintList, setHintList ] = useState([])
+    const [ isGuess, setIsGuess ] = useState(false);
 
     const Page = ({ to }) => {
         switch(to) {
@@ -17,7 +20,7 @@ const HandleMessage = ({ messageQueue }) => {
             case 'WaitingPage':
                 return <WaitingPage isHost={isHost} nameList={nameList} code={roomCode}/>
             case 'Game':
-                return <Game/>
+                return <Game word={word} isGuess={isGuess} code={roomCode} hintList={hintList}/>
             default:
                 return <h2>default</h2>
         }
@@ -33,6 +36,7 @@ const HandleMessage = ({ messageQueue }) => {
                 console.log('set isHost=true');
                 break;
             case 'GUEST_PLAYER':
+                setRoomCode(messageQueue[1]);
                 console.log('set isHost=false');
                 break;
             case 'PLAYER_LIST':
@@ -48,10 +52,20 @@ const HandleMessage = ({ messageQueue }) => {
             case 'GAME_START':
                 setDirect('Game');
                 break;
+            case 'GUESS_PLAYER':
+                setIsGuess(true);
+                break;
+            case 'WORD':
+                setWord(messageQueue[1]);
+                break;
+            case 'HINT_LIST':
+                setHintList(messageQueue.slice(1));
+                console.log(messageQueue.slice(1));
+                break;
             default:
                 console.log(`${messageQueue}`);
                 break;}
-        },[messageQueue, setIsHost, setNameList, setDirect, setRoomCode],);
+        },[messageQueue, setIsHost, setNameList, setDirect, setRoomCode, setWord, setIsGuess, setHintList],);
 
     return (
         <div>

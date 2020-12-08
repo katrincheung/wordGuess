@@ -1,7 +1,7 @@
 export default function handleLoginRequest(code, rooms, player) {
     console.log('handleLoginRequest');
     if(code in rooms){
-        player.ws.send('GUEST_PLAYER');
+        player.ws.send(`GUEST_PLAYER ${code}`);
         rooms[code].push(player);
         let nameList = [];
         rooms[code].forEach(player => nameList.push(player.name));

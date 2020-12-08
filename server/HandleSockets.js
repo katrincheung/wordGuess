@@ -1,5 +1,6 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
-import Player from "./player.js";
+import Player from "./Player.js";
+import {receiveWord, sendWord} from "./GameFunction.js";
 
 let rooms = {};
 
@@ -16,10 +17,10 @@ export default function handleSockets(ws, messageQueue) {
                 break;
             case 'GAME_START':
                 handleGameStartRequest(rooms[messageQueue[1]]);
+                sendWord(rooms[messageQueue[1]],messageQueue[1]);
                 break;
-            case 'WORD_INPUT':
-                let word = messageQueue[1];
-                console.log(`inputWord = ${word}`);
+            case 'HINT_INPUT':
+                receiveWord(messageQueue[1], messageQueue[2], rooms[messageQueue[2]])
                 break;
             default:
                 console.log(`unknownInput = ${messageQueue}`);
