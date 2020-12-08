@@ -5,8 +5,21 @@ const roomWordDict = {};
 const roomAns = {};
 
 function removeDuplicateWords(wordList) {
-    //todo
-    return wordList;
+    const temp = {};
+    const newWordList = [];
+    wordList.forEach(word => {
+        if(word in temp){
+            temp[word] += 1;
+        }else {
+            temp[word] = 0;
+        }
+    })
+    for (let word in temp){
+        if(temp[word] === 0){
+            newWordList.push(word);
+        }
+    }
+    return newWordList;
 }
 
 export function sendWord(room, code){
