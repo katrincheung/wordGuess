@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import WaitingPage from "./WaitingPage";
 import Login from "./Login";
 import Game from "./Game";
+import Result from "./Result";
 
 const HandleMessage = ({ messageQueue }) => {
 
@@ -12,6 +13,7 @@ const HandleMessage = ({ messageQueue }) => {
     const [ word, setWord ] = useState('');
     const [ hintList, setHintList ] = useState([])
     const [ isGuess, setIsGuess ] = useState(false);
+    const [ result, setResult ] = useState([]);
 
     const Page = ({ to }) => {
         switch(to) {
@@ -21,6 +23,8 @@ const HandleMessage = ({ messageQueue }) => {
                 return <WaitingPage isHost={isHost} nameList={nameList} code={roomCode}/>
             case 'Game':
                 return <Game word={word} isGuess={isGuess} code={roomCode} hintList={hintList}/>
+            case 'Result':
+                return <Result ans={result[0]} guessWord={result[1]} code={roomCode}/>
             default:
                 return <h2>default</h2>
         }
@@ -60,7 +64,10 @@ const HandleMessage = ({ messageQueue }) => {
                 break;
             case 'HINT_LIST':
                 setHintList(messageQueue.slice(1));
-                console.log(messageQueue.slice(1));
+                break;
+            case 'RESULT':
+                setDirect('Result');
+                setResult(messageQueue.slice(1))
                 break;
             default:
                 console.log(`${messageQueue}`);

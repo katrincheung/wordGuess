@@ -2,7 +2,7 @@ import random from "./Random.js";
 
 const wordList = ['apple', 'orange', 'pear', 'banana'];
 const roomWordDict = {};
-
+const roomAns = {};
 
 function removeDuplicateWords(wordList) {
     //todo
@@ -12,6 +12,7 @@ function removeDuplicateWords(wordList) {
 export function sendWord(room, code){
     const guessPlayer = room[random(room.length)];
     const word = wordList[random(wordList.length)];
+    roomAns[code] = word;
     room.forEach(player => {
         if(player != guessPlayer)
             player.ws.send(`WORD ${word}`)
@@ -29,5 +30,9 @@ export function receiveWord(word, code, room){
         roomWordDict[code] = removeDuplicateWords(roomWordDict[code]);
         room.forEach(player => player.ws.send(['HINT_LIST',roomWordDict[code].join(' ')].join(' ')));
     }
+}
+
+export function checkAns(guessWord, code, room) {
+    room.forEach(player => player.ws.send(`RESULT ${roomAns} ${guessWord}`))
 }
 
