@@ -1,5 +1,5 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
-// import handleGameStartRequest from "./LoginFunction.js";
+
 
 export default function handleMessage(ws, messageQueue) {
     if (messageQueue.length != 0){
@@ -11,7 +11,7 @@ export default function handleMessage(ws, messageQueue) {
                 console.log(`name = ${name} code = ${code}`);
                 handleLoginRequest(ws, name, code);
                 break;
-            case 'GAME_BEGIN':
+            case 'GAME_START':
                 handleGameStartRequest();
                 break;
             case 'WORD_INPUT':

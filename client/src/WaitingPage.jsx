@@ -2,10 +2,10 @@ import React from 'react';
 import { socket } from "./App";
 
 
-function WaitingPage({ isHost }) {
-
+function WaitingPage({ isHost, nameList }) {
+    console.log(`nameList = ${nameList}`);
     const StartButton = ({ isHost }) => {
-        console.log(isHost.toString())
+
         if(isHost) {
             return <button type="button" onClick={() => socket.send('GAME_START')}>button</button>
         }else {
@@ -16,6 +16,9 @@ function WaitingPage({ isHost }) {
     return (
         <div>
             <h1>Waiting Page</h1>
+            {
+                nameList.map((name,key) => <li key={key}>{name}</li>)
+            }
             <StartButton isHost={isHost}/>
         </div>
     );

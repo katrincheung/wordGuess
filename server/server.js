@@ -1,5 +1,6 @@
 import handleMessage from './HandleMessage.js';
 import WebSocket from "ws";
+import { handleDisconnect } from './LoginFunction.js';
 
 const server = new WebSocket.Server({ port: 8080 });
 
@@ -9,8 +10,9 @@ server.on('connection', (ws) => {
         let messageQueue = message.split(' ');
         console.log(messageQueue);
         handleMessage(ws, messageQueue);
-        // ws.send('Message received');
     })
+
+    ws.on('close', () => handleDisconnect());
 
     ws.send('Server connected')
 

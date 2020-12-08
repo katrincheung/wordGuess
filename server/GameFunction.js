@@ -1,9 +1,8 @@
 
 
-function sendStartMessage(socket, word) {
-    socket.send('GameStartMessage');
-    socket.send(word);
-    socket.send('Message is finished!!!');
+function sendStartMessage(socket) {
+    socket.send('GAME_START');
+    socket.send('word');
 }
 
 function sendGuessMessage(socket, word) {
