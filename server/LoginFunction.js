@@ -1,19 +1,19 @@
-export default function handleLoginRequest(ws, name, code, wsDict, rooms) {
+export default function handleLoginRequest(code, rooms, player) {
     console.log('handleLoginRequest');
     if(code in rooms){
-        ws.send('GUEST_PLAYER');
-        rooms[code].push(name);
-        wsDict[code].push(ws);
-        wsDict[code].forEach( ws => ws.send(['PLAYER_LIST',rooms[code].join(' ')].join(' ')) );
+        player.ws.send('GUEST_PLAYER');
+        rooms[code].push(player);
+        let nameList = [];
+        rooms[code].forEach(player => nameList.push(player.name));
+        rooms[code].forEach( player => player.ws.send(['PLAYER_LIST',nameList.join(' ')].join(' ')) );
     }else {
-        ws.send(`HOST_PLAYER ${code}`);
-        rooms[code] = [name];
-        wsDict[code] = [ws];
-        ws.send(`PLAYER_LIST ${name}`);
+        player.ws.send(`HOST_PLAYER ${code}`);
+        rooms[code] = [player];
+        player.ws.send(`PLAYER_LIST ${player.name}`);
     }
-    return (wsDict, rooms);
+    return (rooms);
 }
 
-export function handleGameStartRequest(wsList) {
-    wsList.forEach( ws => ws.send('GAME_START') );
+export function handleGameStartRequest(room) {
+    room.forEach( player => player.ws.send('GAME_START') );
 }

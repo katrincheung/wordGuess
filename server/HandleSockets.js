@@ -1,6 +1,6 @@
 import handleLoginRequest, { handleGameStartRequest } from "./LoginFunction.js";
+import Player from "./player.js";
 
-let wsDict = {};
 let rooms = {};
 
 export default function handleSockets(ws, messageQueue) {
@@ -11,10 +11,11 @@ export default function handleSockets(ws, messageQueue) {
                 let name = messageQueue[1];
                 let code = messageQueue[2];
                 console.log(`name = ${name} code = ${code}`);
-                wsDict, rooms = handleLoginRequest(ws, name, code, wsDict, rooms);
+                const player = new Player(name, ws);
+                rooms = handleLoginRequest(code, rooms, player);
                 break;
             case 'GAME_START':
-                handleGameStartRequest(wsDict[messageQueue[1]]);
+                handleGameStartRequest(rooms[messageQueue[1]]);
                 break;
             case 'WORD_INPUT':
                 let word = messageQueue[1];
@@ -30,23 +31,23 @@ export default function handleSockets(ws, messageQueue) {
 export function handleDisconnection() {
     let index = -1;
     let code = '';
-    for (let wsList in wsDict) {
-        wsDict[wsList].forEach( (ws, i) => {
-            if(ws.readyState == 3){
+    for (let roomCode in rooms) {
+        rooms[roomCode].forEach( (player, i) => {
+            if(player.ws.readyState == 3){
                 index = i;
-                code = wsList;
+                code = roomCode;
             }
         })
     }
     if(index != -1){
         rooms[code].splice(index, 1);
-        wsDict[code].splice(index, 1);
         if(index == 0){
-            wsDict[code].forEach( ws => ws.send('HOST_DISCONNECTED'));
-            delete wsDict[code];
+            rooms[code].forEach( player => player.ws.send('HOST_DISCONNECTED'));
             delete rooms[code];
         }else{
-            wsDict[code].forEach( ws => ws.send(['PLAYER_LIST',rooms[code].join(' ')].join(' ')) );
+            let nameList = [];
+            rooms[code].forEach(player => nameList.push(player.name));
+            rooms[code].forEach( player => player.ws.send(['PLAYER_LIST',nameList.join(' ')].join(' ')) );
         }
     }
 }
