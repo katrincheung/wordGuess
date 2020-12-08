@@ -1,6 +1,7 @@
-import handleMessage from './HandleMessage.js';
+import handleSockets from './HandleSockets.js';
 import WebSocket from "ws";
-import { handleDisconnection } from './LoginFunction.js';
+import { handleDisconnection } from "./HandleSockets.js";
+
 
 const server = new WebSocket.Server({ port: 8080 });
 
@@ -9,7 +10,7 @@ server.on('connection', (ws) => {
     ws.on('message', (message) => {
         let messageQueue = message.split(' ');
         console.log(messageQueue);
-        handleMessage(ws, messageQueue);
+        handleSockets(ws, messageQueue);
     })
 
     ws.on('close', () => handleDisconnection());
