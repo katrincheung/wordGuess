@@ -4,31 +4,32 @@ import Login from "./Login";
 import Game from "./Game";
 import Result from "./Result";
 
+const Page = ({ direct, isHost, isGuess, nameList, roomCode, word, hintList, result }) => {
+    switch(direct) {
+        case 'Login':
+            return <Login/>
+        case 'WaitingPage':
+            return <WaitingPage isHost={isHost} nameList={nameList} code={roomCode}/>
+        case 'Game':
+            return <Game word={word} isGuess={isGuess} code={roomCode} hintList={hintList}/>
+        case 'Result':
+            return <Result ans={result[0]} guessWord={result[1]} code={roomCode}/>
+        default:
+            return <h2>default</h2>
+    }
+}
+
 const HandleMessage = ({ messageQueue }) => {
 
     const [ direct, setDirect ] = useState('Login');
     const [ isHost, setIsHost ] = useState(false);
+    const [ isGuess, setIsGuess ] = useState(false);
     const [ nameList, setNameList ] = useState([]);
     const [ roomCode, setRoomCode ] = useState('');
     const [ word, setWord ] = useState('');
     const [ hintList, setHintList ] = useState([])
-    const [ isGuess, setIsGuess ] = useState(false);
     const [ result, setResult ] = useState([]);
 
-    const Page = ({ to }) => {
-        switch(to) {
-            case 'Login':
-                return <Login/>
-            case 'WaitingPage':
-                return <WaitingPage isHost={isHost} nameList={nameList} code={roomCode}/>
-            case 'Game':
-                return <Game word={word} isGuess={isGuess} code={roomCode} hintList={hintList}/>
-            case 'Result':
-                return <Result ans={result[0]} guessWord={result[1]} code={roomCode}/>
-            default:
-                return <h2>default</h2>
-        }
-    }
 
     useEffect(() => {
         console.log(`whole message = ${messageQueue}`);
@@ -67,6 +68,8 @@ const HandleMessage = ({ messageQueue }) => {
                 break;
             case 'RESULT':
                 setDirect('Result');
+                setHintList([]);
+                setIsGuess(false);
                 setResult(messageQueue.slice(1))
                 break;
             default:
@@ -76,8 +79,16 @@ const HandleMessage = ({ messageQueue }) => {
 
     return (
         <div>
-            {/*<h3>direct to {direct}</h3>*/}
-            <Page to={direct}/>
+            <Page
+                direct={direct}
+                isHost={isHost}
+                isGuess={isGuess}
+                nameList={nameList}
+                roomCode={roomCode}
+                word={word}
+                hintList={hintList}
+                result={result}
+            />
         </div>
     );
 

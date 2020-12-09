@@ -14,13 +14,11 @@ function Login() {
 
     return (
         <div>
+            <h1>Login Form</h1>
             <div>
-                <h1>Login Form</h1>
-                <div>
-                    <MyInput value={name} onClick={e => setName(e.target.value)}>Name</MyInput>
-                    <MyInput value={code} onClick={e => setCode(e.target.value)}>Room Code</MyInput>
-                    <button type="button" onClick={handleSubmit}>Login</button>
-                </div>
+                <MyInput value={name} onClick={e => setName(e.target.value)}>Name</MyInput>
+                <MyInput value={code} onClick={e => setCode(e.target.value)}>Room Code</MyInput>
+                <button type="button" onClick={handleSubmit}>Login</button>
             </div>
         </div>
     );

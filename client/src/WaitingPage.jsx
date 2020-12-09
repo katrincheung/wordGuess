@@ -5,21 +5,19 @@ import { socket } from "./App";
 function WaitingPage({ isHost, nameList, code }) {
     console.log(`nameList = ${nameList}`);
 
-    const StartButton = ({ isHost }) => {
-        if(isHost) {
-            return <button type="button" onClick={() => socket.send(`GAME_START ${code}`)}>button</button>
-        }else {
-            return  <h2>You are Guest</h2>
-        }
-    }
-
     return (
         <div>
             <h1>Waiting Page</h1>
+            <ul>
+                {
+                    nameList.map((name,key) => <li key={key}>{name}</li>)
+                }
+            </ul>
             {
-                nameList.map((name,key) => <li key={key}>{name}</li>)
+                isHost
+                ? <button type="button" onClick={() => socket.send(`GAME_START ${code}`)}>button</button>
+                : <h2></h2>
             }
-            <StartButton isHost={isHost}/>
         </div>
     );
 }

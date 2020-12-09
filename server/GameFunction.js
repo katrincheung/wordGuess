@@ -37,7 +37,6 @@ export function sendWord(room, code){
 export function receiveWord(word, code, room){
     roomWordDict[code].push(word);
     console.log(roomWordDict);
-    console.log(room.length-1);
     if(roomWordDict[code].length == room.length-1){
         console.log('receive all hints');
         roomWordDict[code] = removeDuplicateWords(roomWordDict[code]);
@@ -46,6 +45,6 @@ export function receiveWord(word, code, room){
 }
 
 export function checkAns(guessWord, code, room) {
-    room.forEach(player => player.ws.send(`RESULT ${roomAns} ${guessWord}`))
+    room.forEach(player => player.ws.send(`RESULT ${roomAns[code]} ${guessWord}`))
 }
 
